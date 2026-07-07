@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Orbit CRM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<!-- Signature animated aurora background -->
+<div class="aurora-bg" aria-hidden="true">
+  <div class="aurora-blob blob-a"></div>
+  <div class="aurora-blob blob-b"></div>
+  <div class="aurora-blob blob-c"></div>
+  <div class="aurora-grain"></div>
+</div>
+
+<div class="app-shell">
+
+  <!-- APP BAR -->
+  <header class="app-bar glass-strong">
+    <div class="app-bar__brand">
+      <div class="app-bar__logo">O</div>
+      <div class="app-bar__title">Orbit CRM<small>PIPELINE &middot; LEADS &middot; TASKS</small></div>
+    </div>
+
+    <div class="app-bar__search glass">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="global-search" type="text" placeholder="Search customers, leads, deals&hellip;">
+    </div>
+
+    <div class="app-bar__spacer"></div>
+
+    <div class="app-bar__actions">
+      <button class="btn-icon" id="notif-btn" title="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="badge" id="notif-badge">3</span>
+      </button>
+      <button class="btn btn-clay" id="quick-add-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+        New
+      </button>
+      <div class="avatar" title="Nadia Perera">NP</div>
+    </div>
+  </header>
+
+  <!-- NAVIGATION RAIL / DRAWER (desktop & tablet) -->
+  <nav class="nav-rail glass" id="nav-rail">
+    <a class="nav-item is-active" data-view="dashboard">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></svg>
+      <span class="label">Dashboard</span>
+    </a>
+    <a class="nav-item" data-view="customers">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span class="label">Customers</span>
+    </a>
+    <a class="nav-item" data-view="leads">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 11-14h-7l1-6z"/></svg>
+      <span class="label">Leads</span>
+      <span class="badge nav-item__badge" id="leads-nav-badge">4</span>
+    </a>
+    <a class="nav-item" data-view="pipeline">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v4l-7 7v6l-4 2v-8L3 7z"/></svg>
+      <span class="label">Pipeline</span>
+    </a>
+    <a class="nav-item" data-view="tasks">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      <span class="label">Tasks</span>
+    </a>
+    <a class="nav-item" data-view="calendar">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      <span class="label">Calendar</span>
+    </a>
+    <a class="nav-item" data-view="reports">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-4"/></svg>
+      <span class="label">Reports</span>
+    </a>
+
+    <button class="btn-icon nav-rail__toggle" id="rail-toggle" title="Expand navigation">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+  </nav>
+
+  <!-- BOTTOM NAVIGATION (mobile) -->
+  <nav class="bottom-nav glass-strong">
+    <a class="nav-item is-active" data-view="dashboard">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></svg>
+      <span class="label">Home</span>
+    </a>
+    <a class="nav-item" data-view="leads">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 11-14h-7l1-6z"/></svg>
+      <span class="label">Leads</span>
+    </a>
+    <a class="nav-item" data-view="pipeline">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v4l-7 7v6l-4 2v-8L3 7z"/></svg>
+      <span class="label">Pipeline</span>
+    </a>
+    <a class="nav-item" data-view="tasks">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      <span class="label">Tasks</span>
+    </a>
+    <a class="nav-item" data-view="reports">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-4"/></svg>
+      <span class="label">Reports</span>
+    </a>
+  </nav>
+
+  <!-- FAB (mobile quick add) -->
+  <button class="fab" id="fab-add">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+  </button>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- ===================== DASHBOARD ===================== -->
+    <section class="view is-active" id="view-dashboard">
+      <div class="view-header">
+        <div>
+          <span class="eyebrow">Overview</span>
+          <h2>Good to see you, Nadia</h2>
+          <p class="view-sub">Here's what's moving across your pipeline today.</p>
+        </div>
+      </div>
+
+      <div class="bento">
+        <div class="bento-card glass span-3 stat-card">
+          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg></div>
+          <div class="stat-label">Customers</div>
+          <div class="stat-value" id="stat-customers">&mdash;</div>
+          <div class="stat-delta up">Active accounts</div>
+        </div>
+        <div class="bento-card glass span-3 stat-card">
+          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M13 2 3 14h7l-1 8 11-14h-7l1-6z"/></svg></div>
+          <div class="stat-label">Open leads</div>
+          <div class="stat-value" id="stat-leads">&mdash;</div>
+          <div class="stat-delta up">In active outreach</div>
+        </div>
+        <div class="bento-card glass span-3 stat-card">
+          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 3h18v4l-7 7v6l-4 2v-8L3 7z"/></svg></div>
+          <div class="stat-label">Open pipeline value</div>
+          <div class="stat-value" id="stat-open-value">&mdash;</div>
+          <div class="stat-delta up">Across all open stages</div>
+        </div>
+        <div class="bento-card glass span-3 stat-card">
+          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+          <div class="stat-label">Tasks overdue</div>
+          <div class="stat-value" id="stat-overdue">&mdash;</div>
+          <div class="stat-delta down" id="stat-overdue-note">Needs attention</div>
+        </div>
+
+        <div class="bento-card glass span-7">
+          <h3>Pipeline by stage</h3>
+          <div class="mini-bars" id="pipeline-bars"></div>
+        </div>
+        <div class="bento-card glass span-5">
+          <h3>Leads by status</h3>
+          <div id="leads-status-list" style="display:flex; flex-direction:column; gap:0.8rem;"></div>
+        </div>
+
+        <div class="bento-card glass span-12">
+          <h3>Highlights</h3>
+          <div class="carousel" id="highlights-carousel"></div>
+          <div class="carousel-nav" id="highlights-dots"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CUSTOMERS ===================== -->
+    <section class="view" id="view-customers">
+      <div class="view-header">
+        <div>
+          <span class="eyebrow">Accounts</span>
+          <h2>Customers</h2>
+          <p class="view-sub"><span id="customers-count">0</span> accounts on file</p>
+        </div>
+        <button class="btn btn-clay" data-open-dialog="customer">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+          Add customer
+        </button>
+      </div>
+      <div class="data-card glass">
+        <table class="data-table">
+          <thead><tr><th>Customer</th><th>Company</th><th>Contact</th><th>Tags</th><th></th></tr></thead>
+          <tbody id="customers-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===================== LEADS ===================== -->
+    <section class="view" id="view-leads">
+      <div class="view-header">
+        <div>
+          <span class="eyebrow">Acquisition</span>
+          <h2>Leads</h2>
+          <p class="view-sub">Track and qualify incoming interest</p>
+        </div>
+        <button class="btn btn-clay" data-open-dialog="lead">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+          Add lead
+        </button>
+      </div>
+      <div class="tabbar glass" id="leads-tabs">
+        <button class="tab is-active" data-status="all">All</button>
+        <button class="tab" data-status="new">New</button>
+        <button class="tab" data-status="contacted">Contacted</button>
+        <button class="tab" data-status="qualified">Qualified</button>
+        <button class="tab" data-status="lost">Lost</button>
+      </div>
+      <div class="data-card glass">
+        <table class="data-table">
+          <thead><tr><th>Lead</th><th>Source</th><th>Value</th><th>Status</th><th></th></tr></thead>
+          <tbody id="leads-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===================== PIPELINE ===================== -->
+    <section class="view" id="view-pipeline">
+      <div class="view-header">
+        <div>
+          <span class="eyebrow">Sales</span>
+          <h2>Pipeline</h2>
+          <p class="view-sub">Drag deals between stages as they progress</p>
+        </div>
+        <button class="btn btn-clay" data-open-dialog="deal">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+          Add deal
+        </button>
+      </div>
+      <div class="pipeline-board" id="pipeline-board"></div>
+    </section>
+
+    <!-- ===================== TASKS ===================== -->
+    <section class="view" id="view-tasks">
+      <div class="view-header">
+        <div>
+          <span class="eyebrow">Follow-through</span>
+          <h2>Tasks</h2>
+          <p class="view-sub">What needs doing, and when</p>
+        </div>
+        <button class="btn btn-clay" data-open-dialog="task">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+          Add task
+        </button>
+      </div>
+      <div class="data-card glass" id="tasks-list"></div>
+    </section>
+
+    <!-- ===================== CALENDAR ===================== -->
+    <section class="view" id="view-calendar">
+      <div class="view-header">
+        <div>
+          <span class="eyebrow">Schedule</span>
+          <h2 id="calendar-month-title">Calendar</h2>
+          <p class="view-sub">Calls, demos and meetings this month</p>
+        </div>
+        <button class="btn btn-clay" data-open-dialog="event">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+          Add event
+        </button>
+      </div>
+      <div class="bento-card glass span-12">
+        <div class="calendar-grid" id="calendar-dow"></div>
+        <div class="calendar-grid" id="calendar-grid" style="margin-top:0.5rem;"></div>
+      </div>
+    </section>
+
+    <!-- ===================== REPORTS ===================== -->
+    <section class="view" id="view-reports">
+      <div class="view-header">
+        <div>
+          <span class="eyebrow">Insight</span>
+          <h2>Reports</h2>
+          <p class="view-sub">Performance across the funnel</p>
+        </div>
+      </div>
+      <div class="tabbar glass" id="reports-tabs">
+        <button class="tab is-active" data-report="pipeline">Pipeline</button>
+        <button class="tab" data-report="leads">Leads</button>
+        <button class="tab" data-report="tasks">Tasks</button>
+      </div>
+      <div class="bento">
+        <div class="bento-card glass span-8" id="reports-main-panel">
+          <h3>Pipeline value by stage</h3>
+          <div class="mini-bars" id="reports-pipeline-bars"></div>
+        </div>
+        <div class="bento-card glass span-4">
+          <h3>Key figures</h3>
+          <div style="display:flex; flex-direction:column; gap:1rem;" id="reports-figures"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- DIALOG BOX (shared modal, content injected per-form) -->
+<div class="dialog-overlay" id="dialog-overlay">
+  <div class="dialog-box glass-strong" id="dialog-box"></div>
+</div>
+
+<!-- BOTTOM SHEET (mobile quick actions) -->
+<div class="sheet-overlay" id="sheet-overlay">
+  <div class="bottom-sheet glass-strong">
+    <div class="sheet-handle"></div>
+    <h3 style="font-size:1rem; margin-bottom:0.2rem;">Quick add</h3>
+    <p class="dialog-sub">Create something new</p>
+    <div class="sheet-actions">
+      <button class="sheet-action" data-open-dialog="customer">
+        <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg></div>
+        <span>Customer</span>
+      </button>
+      <button class="sheet-action" data-open-dialog="lead">
+        <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M13 2 3 14h7l-1 8 11-14h-7l1-6z"/></svg></div>
+        <span>Lead</span>
+      </button>
+      <button class="sheet-action" data-open-dialog="deal">
+        <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 3h18v4l-7 7v6l-4 2v-8L3 7z"/></svg></div>
+        <span>Deal</span>
+      </button>
+      <button class="sheet-action" data-open-dialog="task">
+        <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="m9 11 3 3L22 4"/></svg></div>
+        <span>Task</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- SNACKBAR host -->
+<div class="snackbar-host" id="snackbar-host"></div>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
