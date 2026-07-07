@@ -6,333 +6,757 @@
 <title>Orbit CRM</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
 
-<!-- Signature animated aurora background -->
-<div class="aurora-bg" aria-hidden="true">
-  <div class="aurora-blob blob-a"></div>
-  <div class="aurora-blob blob-b"></div>
-  <div class="aurora-blob blob-c"></div>
-  <div class="aurora-grain"></div>
-</div>
-
-<div class="app-shell">
-
-  <!-- APP BAR -->
-  <header class="app-bar glass-strong">
-    <div class="app-bar__brand">
-      <div class="app-bar__logo">O</div>
-      <div class="app-bar__title">Orbit CRM<small>PIPELINE &middot; LEADS &middot; TASKS</small></div>
+<!-- AUTH CONTAINER -->
+<div class="auth-container" id="authContainer">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <div class="logo">O</div>
+      <div><h1>Orbit CRM <small>neopolisam</small></h1></div>
     </div>
+    <p class="auth-sub" id="authSub">Sign in to your account</p>
+    <div id="authError" class="auth-error">ⓘ Invalid credentials</div>
 
-    <div class="app-bar__search glass">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-      <input id="global-search" type="text" placeholder="Search customers, leads, deals&hellip;">
+    <form id="loginForm">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="loginEmail" placeholder="demo@orbit.io" value="demo@orbit.io">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" value="password">
+      </div>
+      <button type="submit" class="btn-primary">Sign in</button>
+    </form>
+
+    <form id="signupForm" class="hidden">
+      <div class="field">
+        <label>Full name</label>
+        <input type="text" id="signupName" placeholder="Nadia Perera" value="Nadia Perera">
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="signupEmail" placeholder="nadia@orbit.io" value="nadia@orbit.io">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="signupPassword" placeholder="min 6 chars" value="password">
+      </div>
+      <button type="submit" class="btn-primary">Create account</button>
+    </form>
+
+    <div class="auth-switch">
+      <span id="switchText">Don't have an account?</span>
+      <a id="switchLink">Sign up</a>
     </div>
-
-    <div class="app-bar__spacer"></div>
-
-    <div class="app-bar__actions">
-      <button class="btn-icon" id="notif-btn" title="Notifications">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-        <span class="badge" id="notif-badge">3</span>
-      </button>
-      <button class="btn btn-clay" id="quick-add-btn">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
-        New
-      </button>
-      <div class="avatar" title="Nadia Perera">NP</div>
-    </div>
-  </header>
-
-  <!-- NAVIGATION RAIL / DRAWER (desktop & tablet) -->
-  <nav class="nav-rail glass" id="nav-rail">
-    <a class="nav-item is-active" data-view="dashboard">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></svg>
-      <span class="label">Dashboard</span>
-    </a>
-    <a class="nav-item" data-view="customers">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      <span class="label">Customers</span>
-    </a>
-    <a class="nav-item" data-view="leads">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 11-14h-7l1-6z"/></svg>
-      <span class="label">Leads</span>
-      <span class="badge nav-item__badge" id="leads-nav-badge">4</span>
-    </a>
-    <a class="nav-item" data-view="pipeline">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v4l-7 7v6l-4 2v-8L3 7z"/></svg>
-      <span class="label">Pipeline</span>
-    </a>
-    <a class="nav-item" data-view="tasks">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-      <span class="label">Tasks</span>
-    </a>
-    <a class="nav-item" data-view="calendar">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-      <span class="label">Calendar</span>
-    </a>
-    <a class="nav-item" data-view="reports">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-4"/></svg>
-      <span class="label">Reports</span>
-    </a>
-
-    <button class="btn-icon nav-rail__toggle" id="rail-toggle" title="Expand navigation">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
-    </button>
-  </nav>
-
-  <!-- BOTTOM NAVIGATION (mobile) -->
-  <nav class="bottom-nav glass-strong">
-    <a class="nav-item is-active" data-view="dashboard">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></svg>
-      <span class="label">Home</span>
-    </a>
-    <a class="nav-item" data-view="leads">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 11-14h-7l1-6z"/></svg>
-      <span class="label">Leads</span>
-    </a>
-    <a class="nav-item" data-view="pipeline">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v4l-7 7v6l-4 2v-8L3 7z"/></svg>
-      <span class="label">Pipeline</span>
-    </a>
-    <a class="nav-item" data-view="tasks">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-      <span class="label">Tasks</span>
-    </a>
-    <a class="nav-item" data-view="reports">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-4"/></svg>
-      <span class="label">Reports</span>
-    </a>
-  </nav>
-
-  <!-- FAB (mobile quick add) -->
-  <button class="fab" id="fab-add">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
-  </button>
-
-  <!-- MAIN CONTENT -->
-  <main class="main-content">
-
-    <!-- ===================== DASHBOARD ===================== -->
-    <section class="view is-active" id="view-dashboard">
-      <div class="view-header">
-        <div>
-          <span class="eyebrow">Overview</span>
-          <h2>Good to see you, Nadia</h2>
-          <p class="view-sub">Here's what's moving across your pipeline today.</p>
-        </div>
-      </div>
-
-      <div class="bento">
-        <div class="bento-card glass span-3 stat-card">
-          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg></div>
-          <div class="stat-label">Customers</div>
-          <div class="stat-value" id="stat-customers">&mdash;</div>
-          <div class="stat-delta up">Active accounts</div>
-        </div>
-        <div class="bento-card glass span-3 stat-card">
-          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M13 2 3 14h7l-1 8 11-14h-7l1-6z"/></svg></div>
-          <div class="stat-label">Open leads</div>
-          <div class="stat-value" id="stat-leads">&mdash;</div>
-          <div class="stat-delta up">In active outreach</div>
-        </div>
-        <div class="bento-card glass span-3 stat-card">
-          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 3h18v4l-7 7v6l-4 2v-8L3 7z"/></svg></div>
-          <div class="stat-label">Open pipeline value</div>
-          <div class="stat-value" id="stat-open-value">&mdash;</div>
-          <div class="stat-delta up">Across all open stages</div>
-        </div>
-        <div class="bento-card glass span-3 stat-card">
-          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
-          <div class="stat-label">Tasks overdue</div>
-          <div class="stat-value" id="stat-overdue">&mdash;</div>
-          <div class="stat-delta down" id="stat-overdue-note">Needs attention</div>
-        </div>
-
-        <div class="bento-card glass span-7">
-          <h3>Pipeline by stage</h3>
-          <div class="mini-bars" id="pipeline-bars"></div>
-        </div>
-        <div class="bento-card glass span-5">
-          <h3>Leads by status</h3>
-          <div id="leads-status-list" style="display:flex; flex-direction:column; gap:0.8rem;"></div>
-        </div>
-
-        <div class="bento-card glass span-12">
-          <h3>Highlights</h3>
-          <div class="carousel" id="highlights-carousel"></div>
-          <div class="carousel-nav" id="highlights-dots"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===================== CUSTOMERS ===================== -->
-    <section class="view" id="view-customers">
-      <div class="view-header">
-        <div>
-          <span class="eyebrow">Accounts</span>
-          <h2>Customers</h2>
-          <p class="view-sub"><span id="customers-count">0</span> accounts on file</p>
-        </div>
-        <button class="btn btn-clay" data-open-dialog="customer">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
-          Add customer
-        </button>
-      </div>
-      <div class="data-card glass">
-        <table class="data-table">
-          <thead><tr><th>Customer</th><th>Company</th><th>Contact</th><th>Tags</th><th></th></tr></thead>
-          <tbody id="customers-tbody"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- ===================== LEADS ===================== -->
-    <section class="view" id="view-leads">
-      <div class="view-header">
-        <div>
-          <span class="eyebrow">Acquisition</span>
-          <h2>Leads</h2>
-          <p class="view-sub">Track and qualify incoming interest</p>
-        </div>
-        <button class="btn btn-clay" data-open-dialog="lead">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
-          Add lead
-        </button>
-      </div>
-      <div class="tabbar glass" id="leads-tabs">
-        <button class="tab is-active" data-status="all">All</button>
-        <button class="tab" data-status="new">New</button>
-        <button class="tab" data-status="contacted">Contacted</button>
-        <button class="tab" data-status="qualified">Qualified</button>
-        <button class="tab" data-status="lost">Lost</button>
-      </div>
-      <div class="data-card glass">
-        <table class="data-table">
-          <thead><tr><th>Lead</th><th>Source</th><th>Value</th><th>Status</th><th></th></tr></thead>
-          <tbody id="leads-tbody"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- ===================== PIPELINE ===================== -->
-    <section class="view" id="view-pipeline">
-      <div class="view-header">
-        <div>
-          <span class="eyebrow">Sales</span>
-          <h2>Pipeline</h2>
-          <p class="view-sub">Drag deals between stages as they progress</p>
-        </div>
-        <button class="btn btn-clay" data-open-dialog="deal">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
-          Add deal
-        </button>
-      </div>
-      <div class="pipeline-board" id="pipeline-board"></div>
-    </section>
-
-    <!-- ===================== TASKS ===================== -->
-    <section class="view" id="view-tasks">
-      <div class="view-header">
-        <div>
-          <span class="eyebrow">Follow-through</span>
-          <h2>Tasks</h2>
-          <p class="view-sub">What needs doing, and when</p>
-        </div>
-        <button class="btn btn-clay" data-open-dialog="task">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
-          Add task
-        </button>
-      </div>
-      <div class="data-card glass" id="tasks-list"></div>
-    </section>
-
-    <!-- ===================== CALENDAR ===================== -->
-    <section class="view" id="view-calendar">
-      <div class="view-header">
-        <div>
-          <span class="eyebrow">Schedule</span>
-          <h2 id="calendar-month-title">Calendar</h2>
-          <p class="view-sub">Calls, demos and meetings this month</p>
-        </div>
-        <button class="btn btn-clay" data-open-dialog="event">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
-          Add event
-        </button>
-      </div>
-      <div class="bento-card glass span-12">
-        <div class="calendar-grid" id="calendar-dow"></div>
-        <div class="calendar-grid" id="calendar-grid" style="margin-top:0.5rem;"></div>
-      </div>
-    </section>
-
-    <!-- ===================== REPORTS ===================== -->
-    <section class="view" id="view-reports">
-      <div class="view-header">
-        <div>
-          <span class="eyebrow">Insight</span>
-          <h2>Reports</h2>
-          <p class="view-sub">Performance across the funnel</p>
-        </div>
-      </div>
-      <div class="tabbar glass" id="reports-tabs">
-        <button class="tab is-active" data-report="pipeline">Pipeline</button>
-        <button class="tab" data-report="leads">Leads</button>
-        <button class="tab" data-report="tasks">Tasks</button>
-      </div>
-      <div class="bento">
-        <div class="bento-card glass span-8" id="reports-main-panel">
-          <h3>Pipeline value by stage</h3>
-          <div class="mini-bars" id="reports-pipeline-bars"></div>
-        </div>
-        <div class="bento-card glass span-4">
-          <h3>Key figures</h3>
-          <div style="display:flex; flex-direction:column; gap:1rem;" id="reports-figures"></div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-</div>
-
-<!-- DIALOG BOX (shared modal, content injected per-form) -->
-<div class="dialog-overlay" id="dialog-overlay">
-  <div class="dialog-box glass-strong" id="dialog-box"></div>
-</div>
-
-<!-- BOTTOM SHEET (mobile quick actions) -->
-<div class="sheet-overlay" id="sheet-overlay">
-  <div class="bottom-sheet glass-strong">
-    <div class="sheet-handle"></div>
-    <h3 style="font-size:1rem; margin-bottom:0.2rem;">Quick add</h3>
-    <p class="dialog-sub">Create something new</p>
-    <div class="sheet-actions">
-      <button class="sheet-action" data-open-dialog="customer">
-        <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg></div>
-        <span>Customer</span>
-      </button>
-      <button class="sheet-action" data-open-dialog="lead">
-        <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M13 2 3 14h7l-1 8 11-14h-7l1-6z"/></svg></div>
-        <span>Lead</span>
-      </button>
-      <button class="sheet-action" data-open-dialog="deal">
-        <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 3h18v4l-7 7v6l-4 2v-8L3 7z"/></svg></div>
-        <span>Deal</span>
-      </button>
-      <button class="sheet-action" data-open-dialog="task">
-        <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="m9 11 3 3L22 4"/></svg></div>
-        <span>Task</span>
-      </button>
-    </div>
+    <div style="margin-top: 1rem; font-size:0.7rem; color:#918dab; text-align:center;">demo: demo@orbit.io / password</div>
   </div>
 </div>
 
-<!-- SNACKBAR host -->
-<div class="snackbar-host" id="snackbar-host"></div>
+<!-- CRM APP SHELL -->
+<div id="appShell" class="hidden" style="position:relative; z-index:3;">
 
-<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  <!-- Signature background -->
+  <div class="aurora-bg" aria-hidden="true">
+    <div class="aurora-blob blob-a"></div>
+    <div class="aurora-blob blob-b"></div>
+    <div class="aurora-blob blob-c"></div>
+  </div>
+
+  <div class="app-shell">
+    <!-- APP BAR -->
+    <header class="app-bar glass-strong">
+      <div class="app-bar__brand">
+        <div class="app-bar__logo">O</div>
+        <div class="app-bar__title">Orbit CRM<small>PIPELINE · LEADS · TASKS</small></div>
+      </div>
+      <div class="app-bar__search glass">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="global-search" type="text" placeholder="Search customers, leads, deals…">
+      </div>
+      <div class="app-bar__spacer"></div>
+      <div class="app-bar__actions">
+        <button class="btn-icon" id="notif-btn" title="Notifications">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="badge" id="notif-badge">3</span>
+        </button>
+        <button class="btn btn-clay" id="quick-add-btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+          New
+        </button>
+        <div class="avatar" id="userAvatar">NP</div>
+        <button class="btn-icon" id="logoutBtn" title="Logout" style="background:transparent; border:1px solid #d9dbec;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- NAV RAIL -->
+    <nav class="nav-rail glass" id="nav-rail">
+      <a class="nav-item is-active" data-view="dashboard"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></svg><span class="label">Dashboard</span></a>
+      <a class="nav-item" data-view="customers"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="label">Customers</span></a>
+      <a class="nav-item" data-view="leads"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 11-14h-7l1-6z"/></svg><span class="label">Leads</span><span class="badge nav-item__badge" id="leads-nav-badge">4</span></a>
+      <a class="nav-item" data-view="pipeline"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v4l-7 7v6l-4 2v-8L3 7z"/></svg><span class="label">Pipeline</span></a>
+      <a class="nav-item" data-view="tasks"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span class="label">Tasks</span></a>
+      <a class="nav-item" data-view="calendar"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span class="label">Calendar</span></a>
+      <a class="nav-item" data-view="reports"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-4"/></svg><span class="label">Reports</span></a>
+      <button class="btn-icon nav-rail__toggle" id="rail-toggle" title="Expand"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></button>
+    </nav>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav glass-strong">
+      <a class="nav-item is-active" data-view="dashboard"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></svg><span class="label">Home</span></a>
+      <a class="nav-item" data-view="leads"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 11-14h-7l1-6z"/></svg><span class="label">Leads</span></a>
+      <a class="nav-item" data-view="pipeline"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v4l-7 7v6l-4 2v-8L3 7z"/></svg><span class="label">Pipeline</span></a>
+      <a class="nav-item" data-view="tasks"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span class="label">Tasks</span></a>
+      <a class="nav-item" data-view="reports"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-4"/></svg><span class="label">Reports</span></a>
+    </nav>
+
+    <!-- FAB -->
+    <button class="fab" id="fab-add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></button>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content" id="mainContent">
+      <!-- Views rendered by JavaScript -->
+    </main>
+  </div>
+
+  <!-- DIALOG -->
+  <div class="dialog-overlay" id="dialog-overlay"><div class="dialog-box glass-strong" id="dialog-box"></div></div>
+
+  <!-- SHEET -->
+  <div class="sheet-overlay" id="sheet-overlay">
+    <div class="bottom-sheet glass-strong">
+      <div class="sheet-handle"></div>
+      <h3 style="font-size:1rem;">Quick add</h3>
+      <p class="dialog-sub">Create something new</p>
+      <div class="sheet-actions">
+        <button class="sheet-action" data-open-dialog="customer"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg></div><span>Customer</span></button>
+        <button class="sheet-action" data-open-dialog="lead"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M13 2 3 14h7l-1 8 11-14h-7l1-6z"/></svg></div><span>Lead</span></button>
+        <button class="sheet-action" data-open-dialog="deal"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 3h18v4l-7 7v6l-4 2v-8L3 7z"/></svg></div><span>Deal</span></button>
+        <button class="sheet-action" data-open-dialog="task"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="m9 11 3 3L22 4"/></svg></div><span>Task</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SNACKBAR -->
+  <div class="snackbar-host" id="snackbar-host"></div>
+</div>
+
+<script>
+  // ============================================================
+  // Full CRM JavaScript - SPA with auth and API integration
+  // ============================================================
+  (function() {
+    "use strict";
+
+    // ---- State ----
+    let currentUser = null;
+    let currentView = 'dashboard';
+    const views = ['dashboard', 'customers', 'leads', 'pipeline', 'tasks', 'calendar', 'reports'];
+
+    // Data stores (will be populated from API)
+    let customers = [];
+    let leads = [];
+    let deals = [];
+    let tasks = [];
+    let events = [];
+
+    // ---- DOM refs ----
+    const authContainer = document.getElementById('authContainer');
+    const appShell = document.getElementById('appShell');
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    const switchLink = document.getElementById('switchLink');
+    const switchText = document.getElementById('switchText');
+    const authSub = document.getElementById('authSub');
+    const authError = document.getElementById('authError');
+    const main = document.getElementById('mainContent');
+    const navItems = document.querySelectorAll('.nav-item[data-view]');
+    const userAvatar = document.getElementById('userAvatar');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    let isLogin = true;
+
+    // ---- Helpers ----
+    function showAuthError(msg) {
+      authError.style.display = 'block';
+      authError.textContent = 'ⓘ ' + msg;
+    }
+    function hideAuthError() { authError.style.display = 'none'; }
+
+    function switchMode(toLogin) {
+      isLogin = toLogin;
+      hideAuthError();
+      if (isLogin) {
+        loginForm.classList.remove('hidden');
+        signupForm.classList.add('hidden');
+        switchText.textContent = "Don't have an account?";
+        switchLink.textContent = 'Sign up';
+        authSub.textContent = 'Sign in to your account';
+      } else {
+        loginForm.classList.add('hidden');
+        signupForm.classList.remove('hidden');
+        switchText.textContent = 'Already have an account?';
+        switchLink.textContent = 'Sign in';
+        authSub.textContent = 'Create your Orbit account';
+      }
+    }
+
+    function showSnack(msg, type = 'ok') {
+      const host = document.getElementById('snackbar-host');
+      if (!host) return;
+      const el = document.createElement('div');
+      el.className = `snackbar ${type}`;
+      el.innerHTML = `<span class="dot-status"></span><span>${msg}</span><button>✕</button>`;
+      el.querySelector('button').onclick = () => { el.remove(); };
+      host.appendChild(el);
+      setTimeout(() => { if (el.parentNode) el.remove(); }, 3000);
+    }
+
+    async function apiFetch(url, options = {}) {
+      const res = await fetch(url, {
+        ...options,
+        headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+        credentials: 'same-origin'
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || 'API error');
+      }
+      return res.json();
+    }
+
+    // ---- Auth ----
+    switchLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      switchMode(!isLogin);
+    });
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideAuthError();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+      try {
+        const data = await apiFetch('/api/auth/login', {
+          method: 'POST',
+          body: JSON.stringify({ email, password })
+        });
+        if (data.success) {
+          currentUser = data.user;
+          await loadApp();
+        }
+      } catch (err) {
+        showAuthError(err.message || 'Login failed');
+      }
+    });
+
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideAuthError();
+      const name = document.getElementById('signupName').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
+      const password = document.getElementById('signupPassword').value.trim();
+      if (!name || !email || password.length < 4) {
+        showAuthError('Please fill all fields (password ≥ 4 chars)');
+        return;
+      }
+      try {
+        const data = await apiFetch('/api/auth/signup', {
+          method: 'POST',
+          body: JSON.stringify({ name, email, password })
+        });
+        if (data.success) {
+          currentUser = data.user;
+          await loadApp();
+        }
+      } catch (err) {
+        showAuthError(err.message || 'Signup failed');
+      }
+    });
+
+    // ---- Load app data ----
+    async function loadApp() {
+      try {
+        // Load all data
+        [customers, leads, deals, tasks, events] = await Promise.all([
+          apiFetch('/api/customers'),
+          apiFetch('/api/leads'),
+          apiFetch('/api/deals'),
+          apiFetch('/api/tasks'),
+          apiFetch('/api/events')
+        ]);
+
+        // Show app
+        authContainer.classList.add('hidden');
+        appShell.classList.remove('hidden');
+
+        // Update user avatar
+        if (currentUser) {
+          const name = currentUser.name || 'User';
+          userAvatar.textContent = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+        }
+
+        // Render initial view
+        renderView('dashboard');
+      } catch (err) {
+        showSnack('Error loading data: ' + err.message, 'err');
+      }
+    }
+
+    // ---- Logout ----
+    logoutBtn.addEventListener('click', async () => {
+      if (!confirm('Logout?')) return;
+      try {
+        await apiFetch('/api/auth/logout', { method: 'POST' });
+        currentUser = null;
+        appShell.classList.add('hidden');
+        authContainer.classList.remove('hidden');
+        showSnack('Logged out', 'ok');
+      } catch (err) {
+        showSnack('Logout failed', 'err');
+      }
+    });
+
+    // ---- Render Views ----
+    function renderView(view) {
+      currentView = view;
+      // Update nav
+      navItems.forEach(n => n.classList.toggle('is-active', n.dataset.view === view));
+      // Generate HTML
+      let html = '';
+      switch (view) {
+        case 'dashboard': html = renderDashboard(); break;
+        case 'customers': html = renderCustomers(); break;
+        case 'leads': html = renderLeads(); break;
+        case 'pipeline': html = renderPipeline(); break;
+        case 'tasks': html = renderTasks(); break;
+        case 'calendar': html = renderCalendar(); break;
+        case 'reports': html = renderReports(); break;
+        default: html = '<p>View not found</p>';
+      }
+      main.innerHTML = html;
+
+      // Post-render hooks
+      if (view === 'dashboard') updateDashboard();
+      if (view === 'customers') attachCustomerActions();
+      if (view === 'leads') attachLeadActions();
+      if (view === 'pipeline') attachPipelineActions();
+      if (view === 'tasks') attachTaskActions();
+      if (view === 'calendar') renderCalendarGrid();
+      if (view === 'reports') renderReportCharts();
+    }
+
+    // ---- Dashboard ----
+    function renderDashboard() {
+      const openLeads = leads.filter(l => l.status !== 'lost').length;
+      const openValue = deals.filter(d => d.stage !== 'won' && d.stage !== 'lost')
+        .reduce((s, d) => s + (d.value || 0), 0);
+      const overdue = tasks.filter(t => !t.done && t.due_date < new Date().toISOString().slice(0, 10)).length;
+      return `
+        <div class="view-header"><div><span class="eyebrow">Overview</span><h2>Good to see you, ${currentUser?.name || 'Nadia'}</h2><p class="view-sub">Here's what's moving across your pipeline today.</p></div></div>
+        <div class="bento">
+          <div class="bento-card glass span-3 stat-card"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg></div><div class="stat-label">Customers</div><div class="stat-value" id="stat-customers">${customers.length}</div><div class="stat-delta up">Active accounts</div></div>
+          <div class="bento-card glass span-3 stat-card"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M13 2 3 14h7l-1 8 11-14h-7l1-6z"/></svg></div><div class="stat-label">Open leads</div><div class="stat-value" id="stat-leads">${openLeads}</div><div class="stat-delta up">In active outreach</div></div>
+          <div class="bento-card glass span-3 stat-card"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 3h18v4l-7 7v6l-4 2v-8L3 7z"/></svg></div><div class="stat-label">Open pipeline value</div><div class="stat-value" id="stat-open-value">$${openValue.toLocaleString()}</div><div class="stat-delta up">Across open stages</div></div>
+          <div class="bento-card glass span-3 stat-card"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div class="stat-label">Tasks overdue</div><div class="stat-value" id="stat-overdue">${overdue}</div><div class="stat-delta down">Needs attention</div></div>
+          <div class="bento-card glass span-7"><h3>Pipeline by stage</h3><div class="mini-bars" id="pipeline-bars"></div></div>
+          <div class="bento-card glass span-5"><h3>Leads by status</h3><div id="leads-status-list" style="display:flex;flex-direction:column;gap:0.8rem;"></div></div>
+          <div class="bento-card glass span-12"><h3>Highlights</h3><div class="carousel" id="highlights-carousel"></div><div class="carousel-nav" id="highlights-dots"></div></div>
+        </div>
+      `;
+    }
+
+    function updateDashboard() {
+      // Pipeline bars
+      const stages = ['new', 'proposal', 'negotiation', 'won', 'lost'];
+      const counts = stages.map(s => deals.filter(d => d.stage === s).length);
+      const max = Math.max(...counts, 1);
+      const container = document.getElementById('pipeline-bars');
+      if (container) {
+        const colors = ['#9b8bfb', '#5fe3b3', '#ff9d84', '#22b98a', '#f2624a'];
+        container.innerHTML = stages.map((s, i) => `
+          <div class="mini-bar"><div class="mini-bar__fill" style="height:${(counts[i] / max) * 120 + 10}px;background:${colors[i]}"></div><div class="mini-bar__label">${s}</div></div>
+        `).join('');
+      }
+
+      // Leads by status
+      const statusList = document.getElementById('leads-status-list');
+      if (statusList) {
+        const groups = ['new', 'contacted', 'qualified', 'lost'];
+        statusList.innerHTML = groups.map(s => `
+          <div style="display:flex;justify-content:space-between;font-size:0.85rem;"><span>${s}</span><span style="font-weight:700;">${leads.filter(l => l.status === s).length}</span></div>
+        `).join('');
+      }
+
+      // Highlights
+      const carousel = document.getElementById('highlights-carousel');
+      if (carousel) {
+        const items = deals.slice(0, 4).map(d => `
+          <div class="carousel-card"><div class="tag">${d.stage}</div><h4>${d.title}</h4><p>$${(d.value || 0).toLocaleString()}</p></div>
+        `).join('');
+        carousel.innerHTML = items || '<p style="color:#918dab;">No deals yet</p>';
+      }
+
+      // Update leads badge
+      document.getElementById('leads-nav-badge').textContent = leads.filter(l => l.status !== 'lost').length;
+    }
+
+    // ---- Customers ----
+    function renderCustomers() {
+      return `
+        <div class="view-header"><div><span class="eyebrow">Accounts</span><h2>Customers</h2><p class="view-sub">${customers.length} accounts on file</p></div><button class="btn btn-clay" data-open-dialog="customer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>Add customer</button></div>
+        <div class="data-card glass"><table class="data-table"><thead><tr><th>Customer</th><th>Company</th><th>Contact</th><th>Tags</th><th></th></tr></thead><tbody id="customers-tbody">${customers.map(c => `
+          <tr><td><div class="name-cell"><div class="mini-avatar">${c.name?.[0] || '?'}</div><div><strong>${c.name || 'Unknown'}</strong><span>${c.email || ''}</span></div></div></td><td>${c.company || ''}</td><td>${c.phone || ''}</td><td>${(c.tags || []).map(t => `<span class="chip">${t}</span>`).join(' ')}</td><td><div class="row-actions"><button class="icon-btn-sm" data-action="delete-customer" data-id="${c._id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></td></tr>
+        `).join('')}</tbody></table></div>
+      `;
+    }
+
+    function attachCustomerActions() {
+      document.querySelectorAll('[data-action="delete-customer"]').forEach(btn => {
+        btn.onclick = async () => {
+          const id = btn.dataset.id;
+          if (!confirm('Delete customer?')) return;
+          try {
+            await apiFetch(`/api/customers/${id}`, { method: 'DELETE' });
+            customers = await apiFetch('/api/customers');
+            renderView('customers');
+            showSnack('Customer deleted', 'ok');
+          } catch (err) {
+            showSnack('Delete failed', 'err');
+          }
+        };
+      });
+    }
+
+    // ---- Leads ----
+    function renderLeads() {
+      return `
+        <div class="view-header"><div><span class="eyebrow">Acquisition</span><h2>Leads</h2><p class="view-sub">Track and qualify incoming interest</p></div><button class="btn btn-clay" data-open-dialog="lead"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>Add lead</button></div>
+        <div class="tabbar glass" id="leads-tabs"><button class="tab is-active" data-status="all">All</button><button class="tab" data-status="new">New</button><button class="tab" data-status="contacted">Contacted</button><button class="tab" data-status="qualified">Qualified</button><button class="tab" data-status="lost">Lost</button></div>
+        <div class="data-card glass"><table class="data-table"><thead><tr><th>Lead</th><th>Source</th><th>Value</th><th>Status</th><th></th></tr></thead><tbody id="leads-tbody">${leads.map(l => `
+          <tr><td><div class="name-cell"><div class="mini-avatar">${l.name?.[0] || '?'}</div><div><strong>${l.name || 'Unknown'}</strong><span>${l.email || ''}</span></div></div></td><td>${l.source || ''}</td><td>$${l.value || 0}</td><td><span class="chip chip-${l.status || 'new'}"><span class="dot"></span>${l.status || 'new'}</span></td><td><div class="row-actions"><button class="icon-btn-sm" data-action="delete-lead" data-id="${l._id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></td></tr>
+        `).join('')}</tbody></table></div>
+      `;
+    }
+
+    function attachLeadActions() {
+      document.querySelectorAll('[data-action="delete-lead"]').forEach(btn => {
+        btn.onclick = async () => {
+          const id = btn.dataset.id;
+          if (!confirm('Delete lead?')) return;
+          try {
+            await apiFetch(`/api/leads/${id}`, { method: 'DELETE' });
+            leads = await apiFetch('/api/leads');
+            renderView('leads');
+            showSnack('Lead deleted', 'ok');
+          } catch (err) {
+            showSnack('Delete failed', 'err');
+          }
+        };
+      });
+
+      // Tab filtering
+      document.querySelectorAll('#leads-tabs .tab').forEach(tab => {
+        tab.onclick = () => {
+          document.querySelectorAll('#leads-tabs .tab').forEach(t => t.classList.remove('is-active'));
+          tab.classList.add('is-active');
+          const status = tab.dataset.status;
+          const filtered = status === 'all' ? leads : leads.filter(l => l.status === status);
+          const tbody = document.getElementById('leads-tbody');
+          if (tbody) {
+            tbody.innerHTML = filtered.map(l => `
+              <tr><td><div class="name-cell"><div class="mini-avatar">${l.name?.[0] || '?'}</div><div><strong>${l.name || 'Unknown'}</strong><span>${l.email || ''}</span></div></div></td><td>${l.source || ''}</td><td>$${l.value || 0}</td><td><span class="chip chip-${l.status || 'new'}"><span class="dot"></span>${l.status || 'new'}</span></td><td><div class="row-actions"><button class="icon-btn-sm" data-action="delete-lead" data-id="${l._id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></td></tr>
+            `).join('');
+            attachLeadActions();
+          }
+        };
+      });
+    }
+
+    // ---- Pipeline ----
+    function renderPipeline() {
+      const stages = ['new', 'proposal', 'negotiation', 'won', 'lost'];
+      return `
+        <div class="view-header"><div><span class="eyebrow">Sales</span><h2>Pipeline</h2><p class="view-sub">Drag deals between stages as they progress</p></div><button class="btn btn-clay" data-open-dialog="deal"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>Add deal</button></div>
+        <div class="pipeline-board" id="pipeline-board">${stages.map(s => `
+          <div class="pipeline-col" data-stage="${s}"><h4>${s} <span class="count-badge">${deals.filter(d => d.stage === s).length}</span></h4>
+            ${deals.filter(d => d.stage === s).map(d => `<div class="deal-card" draggable="true" data-id="${d._id}"><div class="deal-title">${d.title}</div><div class="deal-value">$${d.value || 0}</div></div>`).join('')}
+          </div>
+        `).join('')}</div>
+      `;
+    }
+
+    function attachPipelineActions() {
+      document.querySelectorAll('.deal-card').forEach(card => {
+        card.addEventListener('dragstart', (e) => {
+          e.dataTransfer.setData('text/plain', card.dataset.id);
+        });
+      });
+      document.querySelectorAll('.pipeline-col').forEach(col => {
+        col.addEventListener('dragover', (e) => e.preventDefault());
+        col.addEventListener('drop', async (e) => {
+          e.preventDefault();
+          const id = e.dataTransfer.getData('text/plain');
+          const stage = col.dataset.stage;
+          try {
+            await apiFetch(`/api/deals/${id}`, {
+              method: 'PUT',
+              body: JSON.stringify({ stage })
+            });
+            deals = await apiFetch('/api/deals');
+            renderView('pipeline');
+            showSnack(`Moved to ${stage}`, 'ok');
+          } catch (err) {
+            showSnack('Move failed', 'err');
+          }
+        });
+      });
+    }
+
+    // ---- Tasks ----
+    function renderTasks() {
+      const sorted = [...tasks].sort((a, b) => (a.done === b.done ? 0 : a.done ? 1 : -1));
+      return `
+        <div class="view-header"><div><span class="eyebrow">Follow-through</span><h2>Tasks</h2><p class="view-sub">What needs doing, and when</p></div><button class="btn btn-clay" data-open-dialog="task"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>Add task</button></div>
+        <div class="data-card glass" id="tasks-list">${sorted.map(t => `
+          <div class="task-row ${t.done ? 'is-done' : ''}">
+            <button class="cb ${t.done ? 'checked' : ''}" data-task-id="${t._id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <span class="task-title">${t.title}</span>
+            <span class="task-meta ${t.due_date < new Date().toISOString().slice(0, 10) && !t.done ? 'overdue' : ''}">${t.due_date || ''}</span>
+            <button class="icon-btn-sm" data-action="delete-task" data-id="${t._id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+          </div>
+        `).join('')}</div>
+      `;
+    }
+
+    function attachTaskActions() {
+      document.querySelectorAll('.cb').forEach(cb => {
+        cb.onclick = async () => {
+          const id = cb.dataset.taskId;
+          const task = tasks.find(t => t._id === id);
+          if (!task) return;
+          try {
+            await apiFetch(`/api/tasks/${id}`, {
+              method: 'PUT',
+              body: JSON.stringify({ done: !task.done })
+            });
+            tasks = await apiFetch('/api/tasks');
+            renderView('tasks');
+          } catch (err) {
+            showSnack('Update failed', 'err');
+          }
+        };
+      });
+
+      document.querySelectorAll('[data-action="delete-task"]').forEach(btn => {
+        btn.onclick = async () => {
+          const id = btn.dataset.id;
+          if (!confirm('Delete task?')) return;
+          try {
+            await apiFetch(`/api/tasks/${id}`, { method: 'DELETE' });
+            tasks = await apiFetch('/api/tasks');
+            renderView('tasks');
+            showSnack('Task deleted', 'ok');
+          } catch (err) {
+            showSnack('Delete failed', 'err');
+          }
+        };
+      });
+    }
+
+    // ---- Calendar ----
+    function renderCalendar() {
+      return `
+        <div class="view-header"><div><span class="eyebrow">Schedule</span><h2 id="calendar-month-title">Calendar</h2><p class="view-sub">Calls, demos and meetings this month</p></div><button class="btn btn-clay" data-open-dialog="event"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>Add event</button></div>
+        <div class="bento-card glass span-12"><div class="calendar-grid" id="calendar-dow"></div><div class="calendar-grid" id="calendar-grid" style="margin-top:0.5rem;"></div></div>
+      `;
+    }
+
+    function renderCalendarGrid() {
+      const now = new Date();
+      const year = now.getFullYear(),
+        month = now.getMonth();
+      const first = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const today = now.getDate();
+      const dow = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      const dowContainer = document.getElementById('calendar-dow');
+      if (dowContainer) dowContainer.innerHTML = dow.map(d => `<div class="calendar-dow">${d}</div>`).join('');
+      const grid = document.getElementById('calendar-grid');
+      if (!grid) return;
+      let cells = '';
+      for (let i = 0; i < first; i++) cells += `<div class="calendar-cell is-empty"></div>`;
+      for (let d = 1; d <= daysInMonth; d++) {
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        const dayEvents = events.filter(e => e.date === dateStr);
+        const isToday = d === today && month === now.getMonth() && year === now.getFullYear();
+        cells += `<div class="calendar-cell ${isToday ? 'is-today' : ''}"><span>${d}</span>${dayEvents.map(e => `<div class="calendar-event-pill">${e.title?.slice(0, 10) || ''}</div>`).join('')}</div>`;
+      }
+      grid.innerHTML = cells;
+      document.getElementById('calendar-month-title').textContent = `${new Date(year, month).toLocaleString('default', { month: 'long' })} ${year}`;
+    }
+
+     // ---- Reports ----
+    function renderReports() {
+      return `
+        <div class="view-header"><div><span class="eyebrow">Insight</span><h2>Reports</h2><p class="view-sub">Performance across the funnel</p></div></div>
+        <div class="tabbar glass" id="reports-tabs"><button class="tab is-active" data-report="pipeline">Pipeline</button><button class="tab" data-report="leads">Leads</button><button class="tab" data-report="tasks">Tasks</button></div>
+        <div class="bento"><div class="bento-card glass span-8" id="reports-main-panel"><h3>Pipeline value by stage</h3><div class="mini-bars" id="reports-pipeline-bars"></div></div><div class="bento-card glass span-4"><h3>Key figures</h3><div style="display:flex;flex-direction:column;gap:1rem;" id="reports-figures"></div></div></div>
+      `;
+    }
+
+    function renderReportCharts() {
+      const stages = ['new', 'proposal', 'negotiation', 'won', 'lost'];
+      const values = stages.map(s => deals.filter(d => d.stage === s).reduce((sum, d) => sum + (d.value || 0), 0));
+      const max = Math.max(...values, 1);
+      const container = document.getElementById('reports-pipeline-bars');
+      if (container) {
+        const colors = ['#9b8bfb', '#5fe3b3', '#ff9d84', '#22b98a', '#f2624a'];
+        container.innerHTML = stages.map((s, i) => `
+          <div class="mini-bar"><div class="mini-bar__fill" style="height:${(values[i] / max) * 120 + 10}px;background:${colors[i]}"></div><div class="mini-bar__label">${s}</div></div>
+        `).join('');
+      }
+      const figures = document.getElementById('reports-figures');
+      if (figures) {
+        figures.innerHTML = `
+          <div><span style="color:#918dab;">Total deals</span><span style="float:right;font-weight:700;">${deals.length}</span></div>
+          <div><span style="color:#918dab;">Won value</span><span style="float:right;font-weight:700;">$${deals.filter(d => d.stage === 'won').reduce((s, d) => s + (d.value || 0), 0).toLocaleString()}</span></div>
+          <div><span style="color:#918dab;">Open tasks</span><span style="float:right;font-weight:700;">${tasks.filter(t => !t.done).length}</span></div>
+        `;
+      }
+    }
+
+    // ---- Navigation ----
+    navItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const view = item.dataset.view;
+        if (view) renderView(view);
+      });
+    });
+
+    // ---- Dialogs ----
+    function openDialog(type) {
+      const overlay = document.getElementById('dialog-overlay');
+      const box = document.getElementById('dialog-box');
+      if (!overlay || !box) return;
+      let html = `<h3>Add ${type}</h3><p class="dialog-sub">Fill in the details</p>`;
+      if (type === 'customer') {
+        html += `<div class="field"><label>Name</label><input id="f-name" value="New Customer"></div><div class="field"><label>Company</label><input id="f-company" value="Acme Inc"></div><div class="field"><label>Email</label><input id="f-email" value="new@acme.com"></div><div class="dialog-actions"><button class="btn-ghost" id="dialog-cancel">Cancel</button><button class="btn-clay" id="dialog-save">Save</button></div>`;
+      } else if (type === 'lead') {
+        html += `<div class="field"><label>Name</label><input id="f-name" value="New Lead"></div><div class="field"><label>Email</label><input id="f-email" value="lead@example.com"></div><div class="field"><label>Value</label><input id="f-value" value="5000"></div><div class="dialog-actions"><button class="btn-ghost" id="dialog-cancel">Cancel</button><button class="btn-clay" id="dialog-save">Save</button></div>`;
+      } else if (type === 'deal') {
+        html += `<div class="field"><label>Title</label><input id="f-title" value="New deal"></div><div class="field"><label>Value</label><input id="f-value" value="10000"></div><div class="field"><label>Stage</label><select id="f-stage"><option>new</option><option>proposal</option><option>negotiation</option><option>won</option><option>lost</option></select></div><div class="dialog-actions"><button class="btn-ghost" id="dialog-cancel">Cancel</button><button class="btn-clay" id="dialog-save">Save</button></div>`;
+      } else if (type === 'task') {
+        html += `<div class="field"><label>Task</label><input id="f-title" value="New task"></div><div class="field"><label>Due date</label><input id="f-date" type="date" value="${new Date().toISOString().slice(0, 10)}"></div><div class="dialog-actions"><button class="btn-ghost" id="dialog-cancel">Cancel</button><button class="btn-clay" id="dialog-save">Save</button></div>`;
+      } else if (type === 'event') {
+        html += `<div class="field"><label>Event</label><input id="f-title" value="New event"></div><div class="field"><label>Date</label><input id="f-date" type="date" value="${new Date().toISOString().slice(0, 10)}"></div><div class="dialog-actions"><button class="btn-ghost" id="dialog-cancel">Cancel</button><button class="btn-clay" id="dialog-save">Save</button></div>`;
+      }
+      box.innerHTML = html;
+      overlay.classList.add('is-open');
+      document.getElementById('dialog-cancel')?.addEventListener('click', () => overlay.classList.remove('is-open'));
+      document.getElementById('dialog-save')?.addEventListener('click', async () => {
+        overlay.classList.remove('is-open');
+        try {
+          if (type === 'customer') {
+            const name = document.getElementById('f-name')?.value || 'New';
+            const company = document.getElementById('f-company')?.value || 'Acme';
+            const email = document.getElementById('f-email')?.value || 'new@acme.com';
+            await apiFetch('/api/customers', {
+              method: 'POST',
+              body: JSON.stringify({ name, company, email, phone: '', tags: [] })
+            });
+            customers = await apiFetch('/api/customers');
+            renderView('customers');
+          } else if (type === 'lead') {
+            const name = document.getElementById('f-name')?.value || 'Lead';
+            const email = document.getElementById('f-email')?.value || 'lead@ex.com';
+            const value = parseFloat(document.getElementById('f-value')?.value) || 0;
+            await apiFetch('/api/leads', {
+              method: 'POST',
+              body: JSON.stringify({ name, email, source: 'Manual', status: 'new', value })
+            });
+            leads = await apiFetch('/api/leads');
+            renderView('leads');
+          } else if (type === 'deal') {
+            const title = document.getElementById('f-title')?.value || 'Deal';
+            const value = parseFloat(document.getElementById('f-value')?.value) || 0;
+            const stage = document.getElementById('f-stage')?.value || 'new';
+            await apiFetch('/api/deals', {
+              method: 'POST',
+              body: JSON.stringify({ title, customer_id: customers[0]?._id || 'c1', stage, value })
+            });
+            deals = await apiFetch('/api/deals');
+            renderView('pipeline');
+          } else if (type === 'task') {
+            const title = document.getElementById('f-title')?.value || 'Task';
+            const due_date = document.getElementById('f-date')?.value || new Date().toISOString().slice(0, 10);
+            await apiFetch('/api/tasks', {
+              method: 'POST',
+              body: JSON.stringify({ title, due_date, done: false, related_to: '' })
+            });
+            tasks = await apiFetch('/api/tasks');
+            renderView('tasks');
+          } else if (type === 'event') {
+            const title = document.getElementById('f-title')?.value || 'Event';
+            const date = document.getElementById('f-date')?.value || new Date().toISOString().slice(0, 10);
+            await apiFetch('/api/events', {
+              method: 'POST',
+              body: JSON.stringify({ title, date, time: '12:00', type: 'meeting' })
+            });
+            events = await apiFetch('/api/events');
+            renderView('calendar');
+          }
+          showSnack(`${type} added`, 'ok');
+        } catch (err) {
+          showSnack('Add failed: ' + err.message, 'err');
+        }
+      });
+    }
+
+    document.querySelectorAll('[data-open-dialog]').forEach(el => {
+      el.addEventListener('click', () => {
+        const type = el.dataset.openDialog;
+        if (type) openDialog(type);
+      });
+    });
+
+    // ---- Quick add button ----
+    document.getElementById('quick-add-btn')?.addEventListener('click', () => {
+      document.getElementById('sheet-overlay')?.classList.toggle('is-open');
+    });
+    document.getElementById('fab-add')?.addEventListener('click', () => {
+      document.getElementById('sheet-overlay')?.classList.toggle('is-open');
+    });
+    document.getElementById('sheet-overlay')?.addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) e.currentTarget.classList.remove('is-open');
+    });
+
+    // ---- Rail toggle ----
+    document.getElementById('rail-toggle')?.addEventListener('click', () => {
+      document.getElementById('nav-rail').classList.toggle('is-expanded');
+    });
+
+    // ---- Check if already logged in ----
+    async function checkAuth() {
+      try {
+        const data = await apiFetch('/api/auth/me');
+        if (data.user) {
+          currentUser = data.user;
+          await loadApp();
+        }
+      } catch (e) {
+        // Not logged in, stay on auth page
+      }
+    }
+
+    // Start app
+    checkAuth();
+  })();
+</script>
 </body>
 </html>
