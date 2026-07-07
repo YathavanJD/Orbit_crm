@@ -22,7 +22,7 @@ if USE_MONGO:
     from pymongo import MongoClient
 
     client = MongoClient(MONGO_URI)
-db = client["crm_db"]
+    db = client["crm_db"]
     customers_col = db["customers"]
     leads_col = db["leads"]
     deals_col = db["deals"]
