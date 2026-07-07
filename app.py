@@ -22,7 +22,7 @@ if USE_MONGO:
     from pymongo import MongoClient
 
     client = MongoClient(MONGO_URI)
-    db = client.get_default_database() if client.get_default_database() is not None else client["crm_db"]
+db = client["crm_db"]
     customers_col = db["customers"]
     leads_col = db["leads"]
     deals_col = db["deals"]
